@@ -1,4 +1,4 @@
-"use strict";
+
 $(document).ready(function() {
     var $window = $(window);
     //add id to main menu for mobile menu start
@@ -144,6 +144,9 @@ $(document).ready(function() {
     })
     $('.theme-loader').fadeOut('slow', function() {
         $(this).remove();
+    });
+    $('#full-screen-icon').on('click', function() {
+        toggleFullScreen();
     });
 });
 

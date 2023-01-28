@@ -13,8 +13,6 @@
  */
 ( function( global, factory ) {
 
-	"use strict";
-
 	if ( typeof module === "object" && typeof module.exports === "object" ) {
 
 		// For CommonJS and CommonJS-like environments where a proper `window`
@@ -43,7 +41,6 @@
 // throw exceptions when non-strict code (e.g., ASP.NET 4.5) accesses strict mode
 // arguments.callee.caller (trac-13335). But as of jQuery 3.0 (2016), strict mode should be common
 // enough that all such attempts are guarded in a try block.
-"use strict";
 
 var arr = [];
 

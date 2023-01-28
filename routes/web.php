@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\SOSController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +16,28 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
+
+/**
+ * |---------------------
+ *  |Rutas para usuarios-
+ * |---------------------
+ */
+Route::resource('/users', UserController::class);
+
+
+/**
+ * |---------------------------------
+ *  |Rutas para lo relacionado a SOS-
+ * |---------------------------------
+ */
+Route::post('/sos', [SOSController::class, 'makeSOSCall'])->name('sos');
+Route::get('/sos/report', [SOSController::class, 'makeSOSReport'])->name('sos.report');
+Route::post('/sos/check', [SOSController::class, 'checkSOS'])->name('sos.check');
+Route::post('/sos/checked', [SOSController::class, 'checked'])->name('sos.checked');
+
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
