@@ -108,86 +108,29 @@
             <thead>
                 <tr>
                     <th>Responsable</th>
-                    <th>Fecha</th>
-                    <th>Hora</th>
+                    <th>Fecha/hora</th>
+                    <th>Estado</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Jafet Lara</td>
-                    <td>29/11/2000</td>
-                    <td>12:00pm</td>
-                </tr>
-                <tr>
-                    <td>Jafet Lara</td>
-                    <td>29/11/2000</td>
-                    <td>12:00pm</td>
-                </tr>
-                <tr>
-                    <td>Jafet Lara</td>
-                    <td>29/11/2000</td>
-                    <td>12:00pm</td>
-                </tr>
-                <tr>
-                    <td>Jafet Lara</td>
-                    <td>29/11/2000</td>
-                    <td>12:00pm</td>
-                </tr>
-                <tr>
-                    <td>Jafet Lara</td>
-                    <td>29/11/2000</td>
-                    <td>12:00pm</td>
-                </tr>
-                <tr>
-                    <td>Jafet Lara</td>
-                    <td>29/11/2000</td>
-                    <td>12:00pm</td>
-                </tr>
-                <tr>
-                    <td>Jafet Lara</td>
-                    <td>29/11/2000</td>
-                    <td>12:00pm</td>
-                </tr>
-                <tr>
-                    <td>Jafet Lara</td>
-                    <td>29/11/2000</td>
-                    <td>12:00pm</td>
-                </tr>
-                <tr>
-                    <td>Jafet Lara</td>
-                    <td>29/11/2000</td>
-                    <td>12:00pm</td>
-                </tr>
-                <tr>
-                    <td>Jafet Lara</td>
-                    <td>29/11/2000</td>
-                    <td>12:00pm</td>
-                </tr>
-                <tr>
-                    <td>Jafet Lara</td>
-                    <td>29/11/2000</td>
-                    <td>12:00pm</td>
-                </tr>
-                <tr>
-                    <td>Jafet Lara</td>
-                    <td>29/11/2000</td>
-                    <td>12:00pm</td>
-                </tr>
-                <tr>
-                    <td>Jafet Lara</td>
-                    <td>29/11/2000</td>
-                    <td>12:00pm</td>
-                </tr>
-                <tr>
-                    <td>Jafet Lara</td>
-                    <td>29/11/2000</td>
-                    <td>12:00pm</td>
-                </tr>
-                <tr>
-                    <td>Jafet Lara</td>
-                    <td>29/11/2000</td>
-                    <td>12:00pm</td>
-                </tr>
+                @foreach ($sos as $item)
+                    <tr>
+                        <td>{{ $item->user->name }}</td>
+                        <td>{{ $item->created_at }}</td>
+                        <td>
+                            @if ($item->checked == true)
+                                Atendida
+                            @else
+                            <span class="visually-hidden">No atendida</span>
+                                <form action="{{ route('sos.checked') }}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="id" value="{{ $item->id }}">
+                                    <button class="btn btn-success" type="submit">Atender</button>
+                                </form>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
         {{-- End table --}}

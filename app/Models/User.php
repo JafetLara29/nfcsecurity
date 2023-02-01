@@ -43,4 +43,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    function sos(){
+        return $this->hasMany(SOS::class);
+    }
 }

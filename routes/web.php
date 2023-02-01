@@ -33,7 +33,7 @@ Route::resource('/users', UserController::class);
  * |---------------------------------
  */
 Route::post('/sos', [SOSController::class, 'makeSOSCall'])->name('sos');
-Route::get('/sos/report', [SOSController::class, 'makeSOSReport'])->name('sos.report');
+Route::get('/sos/report', [SOSController::class, 'index'])->name('sos.report');
 Route::post('/sos/check', [SOSController::class, 'checkSOS'])->name('sos.check');
 Route::post('/sos/checked', [SOSController::class, 'checked'])->name('sos.checked');
 

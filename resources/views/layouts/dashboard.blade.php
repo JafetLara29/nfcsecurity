@@ -34,9 +34,12 @@
         var timer;
         $(document).ready(function () {
             ringtone = new Audio("{{ asset('storage/rigtones/AlarmClock.mp3') }}");
-            timer = new Timer(function() {
-                fetchdata();
-            }, 10000);
+            
+            // setInterval(() => {
+                timer = new Timer(function() {
+                    fetchdata();
+                }, 10000);
+            // }, 10000); 
         });
         
         var Timer = function(callback, delay) {
@@ -83,22 +86,33 @@
                             closeOnConfirm: false
                         },
                         function(){
-                            // markAsChecked();
                             swal("Atendida", "Alarma atendida", "success");
                             ringtone.pause();
+                            timer = new Timer(function() {
+                                fetchdata();
+                            }, 10000);
                         });
+                    }else{
+                        timer = new Timer(function() {
+                            fetchdata();
+                        }, 10000);
                     }
                 },
             });
         }
-        function markAsChecked(){
+        
+        function makeSOSCall(){
             $.ajax({
                 type: "post",
-                url: "/sos/checked",
+                url: "/sos",
+                dataType: "json",
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                success: function(response){
-                    if(response["result"] == true){
-                        timer.resume();
+                success: function (response) {
+                    if(response["success"] == true){
+                        alert('alerta hecha');
+                        swal("Correcto", "SOS enviado", "success");
+                    }else{
+                        swal("Error", "Ha ocurrido un erro al realizar el llamado sos", "error");
                     }
                 }
             });
@@ -162,10 +176,15 @@
                             <a class="mobile-menu" id="mobile-collapse" href="#!">
                                 <i class="feather icon-menu"></i>
                             </a>
-                            <form action="{{ route('sos') }}" method="post" class="w-50">
-                                @csrf
-                                <button type="submit" class="btn btn-danger w-100">SOS</button>
-                            </form>
+                            {{-- Si no es un usuario admin muestra el boton de panico --}}
+                            @if (Auth::user()->is_admin == false)
+                                <button type="submit" class="btn btn-danger" onclick="makeSOSCall()">SOS</button>
+                            @else
+                            <a class="navbar-brand" href="#">
+                                NFC Security
+                            </a>
+                            @endif
+
                             <a class="mobile-options">
                                 <i class="feather icon-more-horizontal"></i>
                             </a>
@@ -244,12 +263,13 @@
                                 </li>
                                 <li class="header-notification">
                                     <div class="dropdown-primary dropdown">
-                                        <div class="displayChatbox dropdown-toggle" data-bs-toggle="dropdown">
+                                        <div class="displayChatbox dropdown-toggle" id="chat-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="feather icon-message-square"></i>
                                             <span class="badge bg-c-green">3</span>
                                         </div>
                                     </div>
                                 </li>
+                                {{-- Dropdown de las opciones de configuracion --}}
                                 <li class="user-profile header-notification">
                                     <div class="dropdown-primary dropdown">
                                         <div class="dropdown-toggle" data-bs-toggle="dropdown">
@@ -299,7 +319,7 @@
                 {{-- End navbar --}}
 
                 <!-- Sidebar chat start -->
-                <div id="sidebar" class="users p-chat-user showChat">
+                <div id="sidebar" class="users p-chat-user showChat" aria-labelledby="chat-dropdown">
                     <div class="had-container">
                         <div class="card card_main p-fixed users-main">
                             <div class="user-box">
@@ -1740,7 +1760,7 @@
         // "resources/assets/js/SmoothScroll.js",
         
         "resources/assets/js/sweetalert.js",
-        "resources/assets/js/modal.js", 
+        // "resources/assets/js/modal.js", 
         
         "resources/assets/js/modalEffects.js",
         "resources/assets/js/classie.js",
